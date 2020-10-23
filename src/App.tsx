@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
+import { connect, useSelector } from 'react-redux';
 import './App.css';
+import { DECREMENT, INCREMENT } from './constants/count';
+import { AppState } from './reducers';
 
-function App() {
+const mapStateToProps = (state: any) => {
+  return {
+    count: state,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    increment: () => dispatch({ type: INCREMENT }),
+    decrement: () => dispatch({ type: DECREMENT }),
+  };
+};
+
+function App(props: any) {
+  console.log(props);
+  const { count } = useSelector((state: AppState) => state.count);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>{count}</p>
+      <button onClick={props.increment}>INCREMENT</button>
+      <button onClick={props.decrement}>DECREMENT</button>
     </div>
   );
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
